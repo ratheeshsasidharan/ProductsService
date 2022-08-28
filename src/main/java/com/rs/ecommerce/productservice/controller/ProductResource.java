@@ -1,9 +1,12 @@
 package com.rs.ecommerce.productservice.controller;
 
+import com.rs.ecommerce.productservice.config.ProductServiceConfig;
 import com.rs.ecommerce.productservice.model.Product;
 import com.rs.ecommerce.productservice.model.ProductDto;
 import com.rs.ecommerce.productservice.service.ProductService;
 import com.rs.ecommerce.productservice.util.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,16 +15,16 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
+@Slf4j
 @RequestMapping("/products")
 public class ProductResource {
-    private ProductService productService;
-
-    ProductResource(ProductService productService){
-        this.productService=productService;
-    }
+    private final ProductService productService;
+    private final ProductServiceConfig productServiceConfig;
 
     @GetMapping(value = "/")
     public List<ProductDto> getAllProducts(){
+        log.info("ProductResource.getAllProducts - start");
         return ObjectMapper.mapAll(productService.findAll(), ProductDto.class);
     }
 
